@@ -1,1 +1,5 @@
-
+requests
+altair
+anywidget
+palmerpenguins
+jsonschema
