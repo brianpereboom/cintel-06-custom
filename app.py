@@ -26,7 +26,7 @@ import altair as alt
 
 @reactive.calc()
 def get_stock_data():
-    APIKEY = "demo" #"BSY3N7ZO1IH3X10V"
+    APIKEY = "BSY3N7ZO1IH3X10V"
 
     r = {}
     if input.period() == "Daily":
@@ -131,6 +131,7 @@ with ui.card():
         charts = rule + bar
         
         if "Senkou" in input.ichimoku():
+            color_map = {"green": "#00FF00", "red": "#FF0000"}
             charts += alt.Chart(data).mark_line().encode(
                 alt.X(
                     "datetime:T"
@@ -161,10 +162,10 @@ with ui.card():
                 x='datetime:T',
                 y="Leading Span A (senkou span A):Q",
                 y2="Leading Span B (senkou span B):Q",
-                color=alt.Color('Color:N', scale=alt.Scale(domain=['red','green'], range=['#FF8888','#88FF88']))
+                color=alt.Color('Color:N', scale=alt.Scale(domain=['red','green'], range=['#FF8888','#88FF88'])),
+                opacity=alt.value(0.5)
             )
         if "Chikou" in input.ichimoku():
-            color_map = {"green": "#00FF00", "red": "#FF0000"}
             charts += alt.Chart(data).mark_line().encode(
                 alt.X(
                     "datetime:T"
