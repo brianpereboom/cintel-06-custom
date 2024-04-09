@@ -64,6 +64,7 @@ def get_stock_data():
     data["Leading Span A (senkou span A)"] = ([None] * 52) + [(c + b) / 2 for c, b in zip(CL[17:-26], BL[:-26])]
     data["Leading Span B (senkou span B)"] = ([None] * 78) + [(h + l) / 2 for h, l in zip(PH52[:-26], PL52[:-26])]
     data["Lagging Span (chikou span)"] = list(data["close"][26:]) + ([None] * 26)
+    data["Color"] = ['green' if a > b else 'red' for a, b in zip(data["Leading Span A (senkou span A)"], data["Leading Span B (senkou span B)"])]
     return data
 
 with ui.sidebar():
@@ -156,8 +157,14 @@ with ui.card():
             ).properties(
                 height=height,
                 width=width
+            ) + alt.Chart(data).mark_area().encode(
+                x='datetime:T',
+                y="Leading Span A (senkou span A):Q",
+                y2="Leading Span B (senkou span B):Q",
+                color=alt.Color('Color:N', scale=alt.Scale(domain=['red','green'], range=['#FF8888','#88FF88']))
             )
         if "Chikou" in input.ichimoku():
+            color_map = {"green": "#00FF00", "red": "#FF0000"}
             charts += alt.Chart(data).mark_line().encode(
                 alt.X(
                     "datetime:T"
@@ -166,8 +173,7 @@ with ui.card():
                 .axis(format='%m/%d %H:%m', labelAngle=-45),
                 alt.Y(
                     "Lagging Span (chikou span):Q"
-                ),
-                alt.ColorValue("blue")
+                )
             ).properties(
                 height=height,
                 width=width
