@@ -26,7 +26,7 @@ import altair as alt
 
 @reactive.calc()
 def get_stock_data():
-    APIKEY = "BSY3N7ZO1IH3X10V"
+    APIKEY = "demo"
 
     r = {}
     if input.period() == "Daily":
